@@ -60,7 +60,7 @@ func NewCLIHandler() (*CliHandler, error) {
 	var chunkMode int
 
 	flag.StringVar(&cfg.DocsDirPath, "docs", "./docs", "path to docs folder")
-	flag.IntVar(&chunkMode, "chunk-mode", 4, "mode of chuking")
+	flag.IntVar(&chunkMode, "chunk-mode", 4, "mode of chuking: (1:ChunkModeNoChunk, 2:ChunkModeWord, 3:ChunkModeParagraph, 4:ChunkModeParagraphWordSmart)")
 
 	flag.IntVar(&cfg.ChunkSize, "chunk", -1, "chunk size (default: 5 for paragraph, 400 for words)")
 	flag.IntVar(&cfg.ChunkOverlap, "chunk-overlap", -1, "overlapping chunk size (default: 1 for paragraph, 80 for words)")
@@ -121,6 +121,13 @@ func (h *CliHandler) Start(ctx context.Context) {
 	}
 
 	// 2. loading docs
+	docs, err := h.uc.LoadDocs(ctx, h.Config.DocsDirPath)
+	if err != nil {
+		log.Fatalln("error when LoadDocs", err.Error())
+	}
+	for _, doc := range docs {
+		logrus.Debugf("Document %s, Chunk %d [%d words] is loaded\n", doc.Path, doc.ChunkNo, len(strings.Split(doc.Text, " ")))
+	}
 	logrus.Debugln("Documents Loaded.")
 	logrus.Debugln()
 

@@ -2,12 +2,13 @@ package inmemdb
 
 import (
 	"pikomonde/ask-my-docs/cmd/config"
+	"pikomonde/ask-my-docs/entity"
 	"pikomonde/ask-my-docs/repository"
 )
 
 type InMemoryDBRepo struct {
 	cfg *config.Config
-	db  map[string][]float32
+	db  map[string]entity.Doc
 }
 
 func New(
@@ -15,6 +16,6 @@ func New(
 ) repository.DBRepository {
 	return &InMemoryDBRepo{
 		cfg: cfg,
-		db:  make(map[string][]float32),
+		db:  make(map[string]entity.Doc),
 	}
 }
