@@ -22,5 +22,5 @@ type DBRepository interface {
 	SaveDoc(key string, doc entity.Doc) error
 
 	// Search
-	Search(vectors []float32) (entity.Doc, error)
+	Search(vectors []float32) ([]entity.Doc, error)
 }
